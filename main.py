@@ -13,6 +13,7 @@ import ast
 import json
 import os
 import sys
+import time
 
 def main():
   if len(sys.argv) < 3:
@@ -71,4 +72,7 @@ def main():
       output_file = open(output_dir, 'w')
       output_file.write(json.dumps(ast_json, indent = 2))
       output_file.close()
+start_time = time.time()
 main()
+end_time = time.time()
+print('Execution Time: %s seconds' % (end_time - start_time))

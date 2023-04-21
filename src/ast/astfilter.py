@@ -123,7 +123,7 @@ class ASTFilter():
     for keyword in call_ast['keywords']:
       if keyword['keyword'] in func_args or isinstance(keyword['value'], dict) and keyword['value']['type'] == 'call':
         if isinstance(keyword['value'], dict) and keyword['value']['type'] == 'call':
-          temp_name = self.reduce_call(keyword['value'])
+          self.reduce_call(keyword['value'])
         keywords.append(keyword)
     call_ast['keywords'] = keywords
 
