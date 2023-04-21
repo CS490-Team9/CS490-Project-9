@@ -35,13 +35,13 @@ def main():
   file_paths = crawl_directory(project_path, create_ignore_dict())
 
   # Generate file AST for each path.
-  file_ast = generate_file_ast(file_paths)
+  file_asts = generate_file_ast(file_paths)
 
   func_args = read_function_names('./function_names.json')
 
   # Convert each AST to a JSON string.
   results = []
-  for [path, gen_ast] in file_ast:
+  for [path, gen_ast] in file_asts:
     ast_converter = ASTConverter()
     converted_ast = ast_converter.run(gen_ast)
 

@@ -21,13 +21,16 @@ class ASTConverter:
 
 
   def convert_arguments(self, root):
+    '''Converts arguments to dictionary structures dependent on the type
+    of the node.'''
+
     if isinstance(root, ast.Call):
       return self.convert_call(root)
     elif isinstance(root, ast.Name):
       return self.convert_name(root)
     elif isinstance(root, ast.FunctionDef):
       return self.convert_function_def(root)
-    elif isinstance(root, ast.Import) or isinstance(root, ast.ImportFrom):
+    elif isinstance(root, (ast.Import, ast.ImportFrom)):
       return self.convert_import(root)
     elif isinstance(root, ast.Tuple):
       tuple_dict = {}
@@ -76,29 +79,29 @@ class ASTConverter:
       return ast.unparse(root)
 
   def get_function_names(self, root):
-    '''Returns all the function names of a node as a list.
+    '''Returns all the function names of a node as a string.
     Example:
     return_test().walk().hello_world()
+    
     yields
-    {
-      "object": {
-        "object": [
-          "return_test"
-        ],
-        "attribute": "walk"
-      },
-      "attribute": "hello_world"
-    }
+    
+    return_test.walk.hello_world
     '''
     if isinstance(root, ast.Name):
       if root.id in self.aliases:
         return self.aliases[root.id]
       return root.id
     elif isinstance(root, ast.Attribute):
-      module = self.get_function_names(root.value)
-      return module + '.' + root.attr
+      root_value = self.get_function_names(root.value)
+      if isinstance(root_value, str):
+        return root_value + '.' + root.attr
+      attribute = {}
+      attribute['instance'] = root_value
+      attribute['attr'] = root.attr
+      return attribute
     elif isinstance(root, ast.Call):
-      return self.get_function_names(root.func)
+      func_name = self.convert_call(root)
+      return func_name
     else:
       key = ast.unparse(root)
       if key in self.aliases:
@@ -316,7 +319,7 @@ class ASTConverter:
     while todo:
       node = todo.popleft()
 
-      if isinstance(node, ast.Import) or isinstance(node, ast.ImportFrom):
+      if isinstance(node, (ast.Import, ast.ImportFrom)):
         res['imports'].append(self.convert_import(node))
       elif isinstance(node, ast.Call):
         res['calls'].append(self.convert_call(node))

@@ -187,6 +187,27 @@ class ASTFilter():
     args['elements'] = new_elements
     return call_name
 
+  def search_function_name(self, instance):
+    '''Search functions that are called from other functions for names that are
+    specified in self.function_names
+    
+    Example:
+    test().x.test()
+
+    returns test if it is specified in self.function_names
+    ''' 
+    if isinstance(instance, dict):
+      if 'instance' in instance.keys():
+        call_name = self.search_function_name(instance['instance'])
+        if instance['attr'] in self.function_names:
+          return instance['attr']
+        return call_name
+      else:
+        return self.reduce_value(instance)
+    elif isinstance(instance, str) and instance in self.function_names:
+      return instance
+    return None
+
   def reduce_call(self, call_ast):
     '''Encapsulating function that filters out the arguments and keywords of
     'call' nodes and applies reduction to each argument and keyword value node.
@@ -194,9 +215,11 @@ class ASTFilter():
     Returns function name if a function specified in 'self.function_names' is
     found. None otherwise.
     '''
-    if call_ast['function'] in self.function_names:
-      self.filter_call_args(call_ast, self.func_args[call_ast['function']])
-      return call_ast['function']
+    call_name = self.search_function_name(call_ast['function'])
+    if call_name != None:
+      self.filter_call_args(call_ast, self.func_args[call_name])
+      return call_name
+
     
     call_name = None
     args = []

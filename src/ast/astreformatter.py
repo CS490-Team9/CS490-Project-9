@@ -116,16 +116,29 @@ class ASTReformatter():
       self.search_value(key)
       self.search_value(value)
 
+  def search_function_name(self, instance):
+    if isinstance(instance, dict):
+      if 'instance' in instance.keys():
+        call_name = self.search_function_name(instance['instance'])
+        if instance['attr'] in self.function_names:
+          return instance['attr']
+        return call_name
+      else:
+        return self.search_value(instance)
+    elif isinstance(instance, str) and instance in self.function_names:
+      return instance
+    return None
+
   def search_call(self, call):
     '''Encapsulating function that checks if the call is specified in
     'function_names' and searches the arguments and keywords of 'call'
     nodes for functions specified in 'function_names'.
     '''
-    if call['function'] in self.function_names:
+    if isinstance(call['function'], str) and call['function'] in self.function_names:
       args = []
       for arg in call['args']:
         is_valid_arg = isinstance(arg, dict) and 'type' in arg.keys() and arg['type'] == 'constant'
-        if not is_valid_keyword:
+        if not is_valid_arg:
           return
         else:
           arg['value'] = arg['value']['value']
@@ -148,6 +161,8 @@ class ASTReformatter():
       call['args'] = args
       call['keywords'] = keywords
       self.output_structure.append(call)
+    else:
+      self.search_function_name(call['function'])
     for arg in call['args']:
       self.search_value(arg)
     for keyword in call['keywords']:
