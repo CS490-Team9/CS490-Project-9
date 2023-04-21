@@ -1,4 +1,4 @@
-# Works the same way as everything listed here: https://www.w3schools.com/git/git_ignore.asp?remote=github
+# Works the same way as gitignore: https://www.w3schools.com/git/git_ignore.asp?remote=github
 
 # Ignore everything except Python files
 !*.py
