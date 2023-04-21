@@ -1,3 +1,5 @@
+!input_test_files/test.py
+input_test_files/
 __pycache__
 output/
 .DS_Store
