@@ -64,19 +64,20 @@ r()"""
 
     expected = {
       'imports': [],
-      'calls': [
-        {
-          'type': 'call',
-          'function': 'print',
-          'args': [
-            '3'
-          ],
-          'keywords': [
-            {
-              'keyword': 'test',
-              'value': '7'
-            }
-          ]
+      'calls': [{
+        'type': 'call',
+        'function': 'print',
+        'args': [{
+          'type': 'constant',
+          'value': 3
+        }],
+        'keywords': [{
+          'keyword': 'test',
+          'value': {
+            'type': 'constant',
+            'value': 7
+          }
+        }]
       }],
       'function_defs': []
     }
@@ -90,31 +91,31 @@ r()"""
 
     expected = {
       'imports': [],
-      'calls': [
-        {
+      'calls': [{
+        'type': 'call',
+        'function': 'print',
+        'args': [{
           'type': 'call',
-          'function': 'print',
-          'args': [
-            {
-              'type': 'call',
-              'function': 'test',
-              'args': [
-                  '3'
-              ],
-              'keywords': [
-                {
-                  'keyword': 'x',
-                  'value': '4'
-                }
-              ]
+          'function': 'test',
+          'args': [{
+            'type': 'constant',
+            'value': 3
+          }],
+          'keywords': [{
+            'keyword': 'x',
+            'value': {
+              'type': 'constant',
+              'value': 4
             }
-          ],
-          'keywords': [
-            {
-              'keyword': 'test',
-              'value': '7'
-            }
-          ]
+          }]
+        }],
+        'keywords': [{
+          'keyword': 'test',
+          'value': {
+            'type': 'constant',
+            'value': 7
+          }
+        }]
       }],
       'function_defs': []
     }
@@ -128,33 +129,34 @@ r()"""
 
     expected = {
       'imports': [],
-      'calls': [
-        {
-          'type': 'call',
-          'function': 'print',
-          'args': [],
-          'keywords': [
-            {
-              'keyword': 'test',
+      'calls': [{
+        'type': 'call',
+        'function': 'print',
+        'args': [],
+        'keywords': [{
+          'keyword': 'test',
+          'value': {
+            'type': 'call',
+            'function': 'test',
+            'args': [{
+              'type': 'constant',
+              'value': 3
+            }],
+            'keywords': [{
+              'keyword': 'x',
               'value': {
-                'type': 'call',
-                'function': 'test',
-                'args': [
-                  '3'
-                ],
-                'keywords': [
-                  {
-                    'keyword': 'x',
-                    'value': '4'
-                  }
-                ]
+                'type': 'constant',
+                'value': 4
               }
-            },
-            {
-              'keyword': 'hello',
-              'value': '7'
-            }
-          ]
+            }]
+          }
+        }, {
+          'keyword': 'hello',
+          'value': {
+            'type': 'constant',
+            'value': 7
+          }
+        }]
       }],
       'function_defs': []
     }
@@ -174,52 +176,50 @@ def func_def(x, y, z):
     expected = {
       'imports': [],
       'calls': [],
-      'function_defs': [
-        {
-          'type': 'function_def',
-          'name': 'func_def',
-          'args': [
-            'x',
-            'y',
-            'z'],
-          'calls': [
-            {
-              'type': 'call',
-              'function': 'print',
-              'args': [],
-              'keywords': [
-                {
-                  'keyword': 'test',
-                  'value': {
-                    'type': 'call',
-                    'function': 'test',
-                    'args': [
-                      '3'
-                    ],
-                    'keywords': [
-                      {
-                        'keyword': 'x',
-                        'value': '4'
-                      }
-                    ]
-                  }
-                },
-                {
-                  'keyword': 'hello',
-                  'value': '7'
+      'function_defs': [{
+        'type': 'function_def',
+        'name': 'func_def',
+        'args': ['x', 'y', 'z'],
+        'calls': [{
+            'type': 'call',
+            'function': 'print',
+            'args': [],
+            'keywords': [{
+                'keyword': 'test',
+                'value': {
+                  'type': 'call',
+                  'function': 'test',
+                  'args': [{
+                    'type': 'constant',
+                    'value': 3
+                  }],
+                  'keywords': [{
+                    'keyword': 'x',
+                    'value': {
+                      'type': 'constant',
+                      'value': 4
+                    }
+                  }]
                 }
-              ]
-            },
-            {
-              'type': 'call',
-              'function': 'print',
-              'args': [],
-              'keywords': []
-            }
-          ],
-          'function_defs': []
-        }
-      ]
+              },
+              {
+                'keyword': 'hello',
+                'value': {
+                  'type': 'constant',
+                  'value': 7
+                }
+              }
+            ]
+          },
+          {
+            'type': 'call',
+            'function': 'print',
+            'args': [],
+            'keywords': []
+          }
+        ],
+        'function_defs': []
+      }]
     }
 
     astconverter = ASTConverter()
@@ -228,7 +228,7 @@ def func_def(x, y, z):
 
   def test_all_nodes_with_import_substitution(self):
     source ="""
-import print as y, func as func_name
+from test import print as y, func as func_name
 func_name()
 y()
 def func_def(x, y, z):
@@ -241,7 +241,7 @@ def func_def(x, y, z):
       'imports': [
         {
           'type': 'import',
-          'module': None,
+          'module': 'test',
           'names': [
             {
               'name': 'print',
@@ -249,7 +249,7 @@ def func_def(x, y, z):
             },
             {
               'name': 'func',
-              'alias': 'func_name',
+              'alias': 'func_name'
             }
           ]
         }
@@ -257,13 +257,13 @@ def func_def(x, y, z):
       'calls': [
         {
           'type': 'call',
-          'function': 'func',
+          'function': 'test.func',
           'args': [],
           'keywords': []
         },
         {
           'type': 'call',
-          'function': 'print',
+          'function': 'test.print',
           'args': [],
           'keywords': []
         }
@@ -272,10 +272,7 @@ def func_def(x, y, z):
         {
           'type': 'function_def',
           'name': 'func_def',
-          'args': [
-            'x',
-            'y',
-            'z'],
+          'args': ['x', 'y', 'z'],
           'calls': [
             {
               'type': 'call',
@@ -288,25 +285,34 @@ def func_def(x, y, z):
                     'type': 'call',
                     'function': 'test',
                     'args': [
-                      '3'
+                      {
+                        'type': 'constant',
+                        'value': 3
+                      }
                     ],
                     'keywords': [
                       {
                         'keyword': 'x',
-                        'value': '4'
+                        'value': {
+                          'type': 'constant',
+                          'value': 4
+                        }
                       }
                     ]
                   }
                 },
                 {
                   'keyword': 'hello',
-                  'value': '7'
+                  'value': {
+                    'type': 'constant',
+                    'value': 7
+                  }
                 }
               ]
             },
             {
               'type': 'call',
-              'function': 'func',
+              'function': 'test.func',
               'args': [],
               'keywords': []
             }

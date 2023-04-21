@@ -220,8 +220,6 @@ class ASTFilter():
       self.filter_call_args(call_ast, self.func_args[call_name])
       return call_name
 
-    
-    call_name = None
     args = []
     for arg in call_ast['args']:
       temp_name = self.reduce_value(arg)
@@ -241,6 +239,10 @@ class ASTFilter():
 
     call_ast['args'] = args
     call_ast['keywords'] = keywords
+
+    # len(args) > 0 or len(keywords) > 0 indicates that a function was found
+    # in the arguments/keywords of the function that reduce_call() was
+    # initially called with.
     return call_name if len(args) > 0 or len(keywords) > 0 else None
 
   def reduce_function_def(self, function_def_ast):
@@ -267,4 +269,3 @@ class ASTFilter():
     function_def_ast['calls'] = calls
     function_def_ast['function_defs'] = function_defs
     return len(calls) > 0 or len(function_defs) > 0
-

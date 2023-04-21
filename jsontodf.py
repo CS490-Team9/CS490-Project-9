@@ -50,5 +50,3 @@ for index, row in bigDf.iterrows():
 
 
 #bigDf.to_csv('testProgramAnalysis')
-
-

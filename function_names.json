@@ -92,9 +92,6 @@
           "MeanSquaredLogarithmicError",
           "Hinge"
         ]
-    },
-    {
-      "functions": [{"test": ["x"]}]
     }
   ]
 }

@@ -134,39 +134,44 @@ class ASTReformatter():
     'function_names' and searches the arguments and keywords of 'call'
     nodes for functions specified in 'function_names'.
     '''
-    if isinstance(call['function'], str) and call['function'] in self.function_names:
+    def search_args_keywords(call):
+      for arg in call['args']:
+        self.search_value(arg)
+      for keyword in call['keywords']:
+        self.search_value(keyword['value'])
+
+    call_name = self.search_function_name(call['function'])
+    if call_name != None:
       args = []
       for arg in call['args']:
         is_valid_arg = isinstance(arg, dict) and 'type' in arg.keys() and arg['type'] == 'constant'
         if not is_valid_arg:
-          return
+          continue
         else:
           arg['value'] = arg['value']['value']
           args.append(arg)
-
       keywords = []
       keyword_keys = []
       for keyword in call['keywords']:
         is_valid_keyword = isinstance(keyword['value'], dict) and 'type' in keyword['value'].keys() and keyword['value']['type'] == 'constant'
         if not is_valid_keyword:
-          return
+          continue
         else:
           keyword_keys.append(keyword['keyword'])
           keyword['value'] = keyword['value']['value']
           keywords.append(keyword)
+      
+      search_args_keywords(call)
 
-      if len(set(keyword_keys)) != len(set(self.func_args[call['function']])):
+      if len(set(keyword_keys)) != len(set(self.func_args[call_name])):
         return
 
       call['args'] = args
       call['keywords'] = keywords
+      call['function'] = call_name
       self.output_structure.append(call)
     else:
-      self.search_function_name(call['function'])
-    for arg in call['args']:
-      self.search_value(arg)
-    for keyword in call['keywords']:
-      self.search_value(keyword['value'])
+      search_args_keywords(call)
 
   def search_function_def(self, func_def):
     '''Encapsulating function that searches the calls field of 'function_def'
@@ -174,4 +179,3 @@ class ASTReformatter():
     '''
     for call in func_def['calls']:
       self.search_call(call)
-

@@ -44,12 +44,11 @@ def main():
   for [path, gen_ast] in file_asts:
     ast_converter = ASTConverter()
     converted_ast = ast_converter.run(gen_ast)
-
     ast_filter = ASTFilter(func_args)
     filtered_ast = ast_filter.run(converted_ast)
     if filtered_ast != None:
       ast_reformatter = ASTReformatter(func_args)
-      reformatted_ast = ast_reformatter.run(converted_ast)
+      reformatted_ast = ast_reformatter.run(filtered_ast)
       results.append([path, reformatted_ast])
 
   # Create the output directory if there is something to output.
