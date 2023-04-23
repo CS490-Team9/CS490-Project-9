@@ -67,24 +67,33 @@
     },
     {
         "module": "tensorflow.keras.layers",
-        "functions": [
-          "Dense",
-          {
-            "Conv2D": ["in_channels", "out_channels"]
-          },
-          "BatchNormalization", "Activation",
-          "Dropout", "Average",
-          "CategoryEncoding", "Conv1D",
-          "Conv3D", "ELU",
-          "Flatten", "GuassianDropout",
-          "InputLayer", "Softmax",
-          "AbstractRNNCell", "ConvLSTM1D",
-          "ConvLSTM2D", "ConvLSTM3D",
-          "Convolution1D", "ThresholdReLU",
-          "SeperableConv1D", "SeperableConv2D",
-          "SimpleRNN", "PReLU",
-          "GRU"
-        ]
+        "functions": {
+          "Dense": ["units"],
+          "Conv2D": ["filters", "kernel_size"],
+          "BatchNormalization": [], 
+          "Activation": [],
+          "Dropout": ["rate"], 
+          "Average": [],
+          "CategoryEncoding": [], 
+          "Conv1D": ["filters", "kernel_size"],
+          "Conv3D": ["filters", "kernel_size"], 
+          "ELU": ["alpha"],
+          "Flatten": [], 
+          "GuassianDropout": ["rate"],
+          "InputLayer": [], 
+          "Softmax": [],
+          "AbstractRNNCell": [], 
+          "ConvLSTM1D": ["filters", "kernel_size"],
+          "ConvLSTM2D": ["filters", "kernel_size"], 
+          "ConvLSTM3D": ["filters", "kernel_size"],
+          "Convolution1D": ["filters", "kernel_size"],
+          "ThresholdReLU": ["alpha"],
+          "SeperableConv1D": ["filters", "kernel_size"], 
+          "SeperableConv2D": ["filters", "kernel_size"],
+          "SimpleRNN": ["units"], 
+          "PReLU": [],
+          "GRU": ["units"]
+        }
     },
     {
         "module": "tensorflow.keras.optimizers",
