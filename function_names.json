@@ -3,15 +3,14 @@
     {
         "module": "torch.nn",
         "functions": [
-          "Linear","Conv1d",
-          {
-            "Conv2d": ["in_channels", "out_channels"]
-          },
-          {
-            "Conv3d": ["in_channels", "out_channels"]
-          },
-          "BatchNorm2d", "ReLU",
-          "Dropout", "CrossEntropyLoss",
+          {"Linear": ["in_features", "out_features"]},
+          {"Conv1d": ["in_channels", "out_channels"]},
+          {"Conv2d": ["in_channels", "out_channels"]},
+          {"Conv3d": ["in_channels", "out_channels"]},
+          "BatchNorm2d",
+          "ReLU",
+          "Dropout",
+          "CrossEntropyLoss",
           "ELU", "Hardshrink", 
           "LogSigmoid", "Softshrink",
           "Tanh", "Softmin",
