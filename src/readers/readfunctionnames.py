@@ -41,18 +41,11 @@ def read_function_names(path):
         module_name = module['module']
       functions = module['functions']
 
-      for func in functions:
+      for func in functions.keys():
         function_name = func
-        arg_names = []
-        if isinstance(func, dict):
-          for key in func.keys():
-            arg_names = list(set(func[key]))
-            function_name = module_name + '.' + key if module_name != None else key
-            func_names[function_name] = arg_names
-        else:
-          function_name = module_name + '.' + function_name if module_name != None else function_name
-          func_names[function_name] = arg_names
-    
+        function_name = module_name + '.' + function_name if module_name != None else function_name
+        func_names[function_name] = functions[func]
+
     module_keys = list(func_names.keys())
     module_keys.sort()
     sorted_dict = {i: func_names[i] for i in module_keys}
