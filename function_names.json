@@ -112,17 +112,17 @@
     },
     {
         "module": "tensorflow.keras.losses",
-        "functions": [
-          "CategoricalCrossentropy",
-          "BinaryCrossentropy",
-          "SparseCategoricalCrossentropy",
-          "KLDivergence",
-          "MeanSquaredError",
-          "MeanAbsoluteError",
-          "MeanAbsolutePercentageError",
-          "MeanSquaredLogarithmicError",
-          "Hinge"
-        ]
+        "functions": {
+          "CategoricalCrossentropy": [],
+          "BinaryCrossentropy": [],
+          "SparseCategoricalCrossentropy": [],
+          "KLDivergence": [],
+          "MeanSquaredError": [],
+          "MeanAbsoluteError": [],
+          "MeanAbsolutePercentageError": [],
+          "MeanSquaredLogarithmicError": [],
+          "Hinge": []
+        }
     }
   ]
 }
