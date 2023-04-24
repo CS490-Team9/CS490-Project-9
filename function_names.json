@@ -50,19 +50,19 @@
     {
       "module": "torch.optim",
       "functions": {
-        "Adam": [],
+        "Adam": ["lr"],
         "SGD": ["lr"],
-        "Adadelta": [],
-        "Adagrad": [],
-        "AdamW": [],
-        "SparseAdam": [],
-        "Adamax": [],
-        "ASGD": [],
+        "Adadelta": ["lr"],
+        "Adagrad": ["lr"],
+        "AdamW": ["lr"],
+        "SparseAdam": ["lr"],
+        "Adamax": ["lr"],
+        "ASGD": ["lr"],
         "LBFGS": ["lr", "max_iter", "max_eval", "tolerance_grad", "tolerance_change", "history_size", "line_search_fn"],
-        "NAdam": [],
-        "RAdam": [],
-        "RMSprop": [],
-        "Rprop": []
+        "NAdam": ["lr"],
+        "RAdam": ["lr"],
+        "RMSprop": ["lr"],
+        "Rprop": ["lr"]
       }
     },
     {
